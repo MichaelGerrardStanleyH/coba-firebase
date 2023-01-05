@@ -1,4 +1,5 @@
 import 'package:coba_firebase/models/ram.dart';
+import 'package:coba_firebase/pages/add_pc_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,12 +40,12 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Ram"),
+        title: Text("All PC"),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, AddRam.routeName);
+                Navigator.pushNamed(context, AddPc.routeName);
             },
           ),
           IconButton(

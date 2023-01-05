@@ -1,4 +1,6 @@
+import 'package:coba_firebase/pages/add_pc_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
+import 'package:coba_firebase/providers/pcs.dart';
 import 'package:coba_firebase/providers/rams.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +17,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Rams(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Rams(),),
+            ListenableProvider(create: (context) => Pcs()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -26,6 +31,7 @@ class MyApp extends StatelessWidget {
         home: HomePage(),
         routes: {
           AddRam.routeName: (context) => AddRam(),
+          AddPc.routeName: (context) => AddPc(),
         },
       ),
     );

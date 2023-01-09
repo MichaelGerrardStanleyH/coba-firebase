@@ -1,7 +1,9 @@
+import 'package:coba_firebase/pages/add_motherboard_page.dart';
 import 'package:coba_firebase/pages/add_pc_page.dart';
 import 'package:coba_firebase/pages/add_processor_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
 import 'package:coba_firebase/pages/pc_build_page.dart';
+import 'package:coba_firebase/providers/motherboards.dart';
 import 'package:coba_firebase/providers/pcs.dart';
 import 'package:coba_firebase/providers/processors.dart';
 import 'package:coba_firebase/providers/rams.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Rams(),),
             ListenableProvider(create: (context) => Pcs()),
             ListenableProvider(create: (context) => Processors()),
+            ListenableProvider(create: (context) => Motherboards()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
           AddRam.routeName: (context) => AddRam(),
           AddPc.routeName: (context) => AddPc(),
           AddProcessor.routeName: (context) => AddProcessor(),
+          AddMotherboard.routeName: (context) => AddMotherboard(),
         },
       ),
     );

@@ -52,7 +52,7 @@ class Pcs with ChangeNotifier{
       // String name,
       String processor,
       String ram,
-      // String motherboard,
+      String motherboard,
       // int price,
       BuildContext context
       )async {
@@ -63,14 +63,14 @@ class Pcs with ChangeNotifier{
           // "name": name,
           "processor": processor,
           "ram": ram,
-          // "motherboard": motherboard,
+          "motherboard": motherboard,
           // "price": price
         })
     ).then((response){
       Pc existPc = _allPcs.firstWhere((element) => element.id == id);
       existPc.name = "ini nama edit";
       existPc.ram = ram;
-      existPc.motherboard = "null";
+      existPc.motherboard = motherboard;
       existPc.processor = processor;
       existPc.totalPrice = 0;
       notifyListeners();

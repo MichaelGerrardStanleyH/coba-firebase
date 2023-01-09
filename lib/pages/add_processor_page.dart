@@ -40,19 +40,19 @@ class AddProcessor extends StatelessWidget{
               TextFormField(
                 autocorrect: false,
                 autofocus: true,
-                decoration: InputDecoration(labelText: "Nama"),
+                decoration: InputDecoration(labelText: "Name"),
                 textInputAction: TextInputAction.next,
                 controller: nameController,
               ),
               TextFormField(
                 autocorrect: false,
-                decoration: InputDecoration(labelText: "Size"),
+                decoration: InputDecoration(labelText: "Vendor"),
                 textInputAction: TextInputAction.next,
                 controller: vendorController,
               ),
               TextFormField(
                 autocorrect: false,
-                decoration: InputDecoration(labelText: "Size"),
+                decoration: InputDecoration(labelText: "Price"),
                 textInputAction: TextInputAction.next,
                 controller: priceController,
               ),

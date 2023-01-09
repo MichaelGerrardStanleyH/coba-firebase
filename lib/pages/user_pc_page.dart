@@ -1,3 +1,4 @@
+import 'package:coba_firebase/pages/add_motherboard_page.dart';
 import 'package:coba_firebase/pages/add_pc_page.dart';
 import 'package:coba_firebase/pages/add_processor_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
@@ -69,6 +70,12 @@ class _UserPageState extends State<UserPage> {
             icon: Icon(Icons.abc),
             onPressed: () {
               Navigator.pushNamed(context, AddProcessor.routeName);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.baby_changing_station),
+            onPressed: () {
+              Navigator.pushNamed(context, AddMotherboard.routeName);
             },
           ),
         ],

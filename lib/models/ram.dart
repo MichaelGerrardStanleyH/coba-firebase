@@ -1,7 +1,7 @@
 class Ram{
 
   String name, id;
-  int? price;
+  int price;
 
   Ram({required this.name, required this.price, required this.id});
 

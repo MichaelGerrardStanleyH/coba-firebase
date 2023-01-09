@@ -36,13 +36,13 @@ class AddRam extends StatelessWidget{
               TextFormField(
                 autocorrect: false,
                 autofocus: true,
-                decoration: InputDecoration(labelText: "Nama"),
+                decoration: InputDecoration(labelText: "Name"),
                 textInputAction: TextInputAction.next,
                 controller: nameController,
               ),
               TextFormField(
                 autocorrect: false,
-                decoration: InputDecoration(labelText: "Size"),
+                decoration: InputDecoration(labelText: "Price"),
                 textInputAction: TextInputAction.next,
                 controller: sizeController,
               ),

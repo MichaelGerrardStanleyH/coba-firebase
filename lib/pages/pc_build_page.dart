@@ -1,3 +1,5 @@
+import 'package:coba_firebase/models/pc.dart';
+import 'package:coba_firebase/providers/motherboards.dart';
 import 'package:coba_firebase/providers/processors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +22,10 @@ class _PcBuildState extends State<PcBuild> {
   bool isNanti = true;
   @override
   void didChangeDependencies() {
-    print("test did");
     if(isNanti){
       Provider.of<Rams>(context).initalData();
       Provider.of<Processors>(context).initalData();
+      Provider.of<Motherboards>(context).initalData();
     }
     isNanti = false;
 
@@ -31,36 +33,38 @@ class _PcBuildState extends State<PcBuild> {
     super.didChangeDependencies();
   }
 
-  String dropdownValue = "null";
-  String dropdownValue2 = "null";
 
   @override
   Widget build(BuildContext context) {
+    // var for dropdown
+    String dropdownValueRam, dropdownValueProcessor, dropdownValueMotherboard;
 
+    // providers
     final pcs = Provider.of<Pcs>(context);
     final rams = Provider.of<Rams>(context);
     final processors = Provider.of<Processors>(context);
+    final motherboards = Provider.of<Motherboards>(context);
 
     var formData = ModalRoute.of(context)!.settings.arguments as FormData;
+    
+    // existPc from id
+    Pc existPc = pcs.selectById(formData.id);
+    
+    // all list
+    var allMotherboard = motherboards.allMotherboard;
+    var allProcessor = processors.allProcessor;
+    var allRam = rams.allRam;
 
-    print("test");
-    print(rams.allRam);
-    print(processors.allProcessor);
+    // pricing
+    var processorInitialPrice = allProcessor.firstWhere((element) => element.name == existPc.processor).price;
+    var motherboardInitialPrice = allMotherboard.firstWhere((element) => element.name == existPc.motherboard).price;
+    var ramInitialPrice = allRam.firstWhere((element) => element.name == existPc.ram).price;
+    
+    int processorsPrice = processorInitialPrice;
+    int motherboardPrice = motherboardInitialPrice;
+    int ramPrice = ramInitialPrice;
 
-    List<String> allRamsName = [];
-
-    rams.allRam.forEach((element) {
-      allRamsName.add(element.name);
-    });
-
-    var seen = Set<String>();
-    List<String> uniqueList = allRamsName.where((ram) => seen.add(ram)).toList();
-
-    if(dropdownValue.contains("null")){
-      dropdownValue = uniqueList[0];
-    }
-
-
+    // processor
     List<String> allProcessorsName = [];
 
     processors.allProcessor.forEach((element) {
@@ -71,12 +75,58 @@ class _PcBuildState extends State<PcBuild> {
     List<String> uniqueListProcessors = allProcessorsName.where((processor) => seenProcessor.add(processor)).toList();
 
 
-    if(dropdownValue2.contains("null")){
-      dropdownValue2 = uniqueListProcessors[0];
+    if(existPc.processor != "null"){
+      dropdownValueProcessor = existPc.processor;
+    }
+    else{
+      dropdownValueProcessor = uniqueListProcessors[0];
     }
 
-    // print(uniqueList);
-    print(uniqueListProcessors);
+
+    // motherboard
+    List<String> allMotherboardName = [];
+
+    var procieVendor = processors.allProcessor.firstWhere((element) => element.name == dropdownValueProcessor);
+
+    var moboVendor = allMotherboard.where((element) => element.vendor == procieVendor.vendor);
+
+    moboVendor.forEach((element) {
+      allMotherboardName.add(element.name);
+    });
+
+
+    var seenMotherboards = Set<String>();
+    List<String> uniqueListMotherboard = allMotherboardName.where((motherboard) => seenMotherboards.add(motherboard)).toList();
+
+
+    if(allMotherboard.firstWhere((element) => element.name == existPc.motherboard).vendor != allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).vendor ){
+      dropdownValueMotherboard = moboVendor.first.name;
+      motherboardPrice = allMotherboard.firstWhere((element) => element.name == dropdownValueMotherboard).price;
+    }else if(allMotherboard.firstWhere((element) => element.name == existPc.motherboard).vendor == allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).vendor )
+      {
+        dropdownValueMotherboard = existPc.motherboard;
+      }
+    else{
+      dropdownValueMotherboard = uniqueListMotherboard[0];
+    }
+
+    // ram
+    List<String> allRamsName = [];
+
+    rams.allRam.forEach((element) {
+      allRamsName.add(element.name);
+    });
+
+    var seen = Set<String>();
+    List<String> uniqueList = allRamsName.where((ram) => seen.add(ram)).toList();
+
+    if(existPc.ram != "null"){
+      dropdownValueRam = existPc.ram;
+    }
+    else{
+      dropdownValueRam = uniqueList[0];
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -89,43 +139,10 @@ class _PcBuildState extends State<PcBuild> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children:  [
-            DropdownButton<String>(
-              isExpanded: true,
-            value: dropdownValue,
-            icon: const Icon(Icons.arrow_downward),
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                dropdownValue = value!;
-                pcs.editPc(formData.id, pcs.selectById(formData.id).processor, dropdownValue, context).then((_) {
-                  setState(() {
-                  });
-                });
-              });
-            },
-            items: uniqueList.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Center(child: Text(value)),
-              );
-            }).toList(),
-            ),
-              Container(
-                height: 50,
-                margin: const EdgeInsets.all(15.0),
-                child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children:  [
+              // processor
                 DropdownButton<String>(
                 isExpanded: true,
-                value: dropdownValue2,
+                value: dropdownValueProcessor,
                 icon: const Icon(Icons.arrow_downward),
                 elevation: 16,
                 style: const TextStyle(color: Colors.deepPurple),
@@ -136,9 +153,10 @@ class _PcBuildState extends State<PcBuild> {
                 onChanged: (String? value) {
                   // This is called when the user selects an item.
                   setState(() {
-                    dropdownValue2 = value!;
-                    uniqueListProcessors.add(dropdownValue2);
-                    pcs.editPc(formData.id, dropdownValue2, pcs.selectById(formData.id).ram, context).then((_) {
+                    dropdownValueProcessor = value!;
+                    processorsPrice = processors.allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).price;
+                    uniqueListProcessors.add(dropdownValueProcessor);
+                    pcs.editPc(formData.id, dropdownValueProcessor, existPc.ram, existPc.motherboard, context).then((_) {
                       setState(() {
                       });
                     });
@@ -151,16 +169,80 @@ class _PcBuildState extends State<PcBuild> {
                   );
                 }).toList(),
               ),
-              ])),
+              // motherboard
+              DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValueMotherboard,
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    dropdownValueMotherboard = value!;
+                    motherboardPrice = allMotherboard.firstWhere((element) => element.name == dropdownValueMotherboard).price;
+                    uniqueListMotherboard.add(dropdownValueMotherboard);
+                    pcs.editPc(formData.id, existPc.processor, existPc.ram, dropdownValueMotherboard, context).then((_) {
+                      setState(() {
+                      });
+                    });
+                  });
+                },
+                items: uniqueListMotherboard.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Center(child: Text(value)),
+                  );
+                }).toList(),
+              ),
+              // ram
+              DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValueRam,
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    dropdownValueRam = value!;
+                    ramPrice = allRam.firstWhere((element) => element.name == dropdownValueRam).price;
+                    pcs.editPc(formData.id, existPc.processor, dropdownValueRam, existPc.motherboard, context).then((_) {
+                      setState(() {
+                      });
+                    });
+                  });
+                },
+                items: uniqueList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Center(child: Text(value)),
+                  );
+                }).toList(),
+              ),
               Container(
-                height: 40,
+                padding: const EdgeInsets.all(10.0),
                 margin: const EdgeInsets.all(15.0),
                 color: Colors.greenAccent,
-                child: const Center(child: Text("Ram")),
-              ),
-            ],
+                child: Wrap(
+                  children: [
+                    Center(child: Text("$processorsPrice")),
+                    Center(child: Text("$motherboardPrice")),
+                    Center(child: Text("$ramPrice"),)
+                  ],
+                ),
+              )
+            ]
           ),
-        ),
-      );
+      )
+    );
   }
 }

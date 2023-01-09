@@ -17,21 +17,22 @@ class Rams with ChangeNotifier{
     _allRams.firstWhere((element) => element.id == id);
 
 
-  Future<void> addRam(String name, int size, BuildContext context)async {
-    Uri url = Uri.parse("https://http-req-d5914-default-rtdb.firebaseio.com/ram.json");
+  Future<void> addRam(String name, int price, BuildContext context)async {
+    Uri url = Uri.parse("https://http-req-d5914-default-rtdb.firebaseio.com/rams.json");
     return http.post(
         url,
         body: json.encode({
           "name": name,
-          "size": size,
+          "price": price,
         },
         ),
     ).then((response) {
       _allRams.add(
-        Ram(name: name,
-            size: size,
-            id: json.decode(response.body)["name"].toString(),
-      ));
+        Ram(
+              name: name,
+              price: price,
+              id: json.decode(response.body)["name"].toString(),
+        ));
 
       notifyListeners();
     });
@@ -47,12 +48,14 @@ class Rams with ChangeNotifier{
       dataResponse.forEach((key, value) {
         _allRams.add(
           Ram(
-                name: value["name"]
-              , size: value["size"]
-              , id: key
+              id: key,
+              name: value["name"],
+              price: value["price"],
           )
         );
       });
+      print("berhasil data");
+
       notifyListeners();
   }
 }

@@ -14,6 +14,9 @@ class Processors with ChangeNotifier{
   Processor selectById(String id) =>
       _allProcessors.firstWhere((element) => element.id == id);
 
+  Processor selectByName(String name) =>
+    _allProcessors.firstWhere((element) => element.name == name);
+
   Future<void> addProcessor(
       String name,
       String vendor,

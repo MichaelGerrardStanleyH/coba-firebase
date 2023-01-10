@@ -56,9 +56,9 @@ class _PcBuildState extends State<PcBuild> {
     var allRam = rams.allRam;
 
     // pricing
-    var processorInitialPrice = allProcessor.firstWhere((element) => element.name == existPc.processor).price;
-    var motherboardInitialPrice = allMotherboard.firstWhere((element) => element.name == existPc.motherboard).price;
-    var ramInitialPrice = allRam.firstWhere((element) => element.name == existPc.ram).price;
+    var processorInitialPrice = processors.selectByName(existPc.processor).price;
+    var motherboardInitialPrice = motherboards.selectByName(existPc.motherboard).price;
+    var ramInitialPrice = rams.selectByName(existPc.ram).price;
     
     int processorsPrice = processorInitialPrice;
     int motherboardPrice = motherboardInitialPrice;
@@ -86,7 +86,7 @@ class _PcBuildState extends State<PcBuild> {
     // motherboard
     List<String> allMotherboardName = [];
 
-    var procieVendor = processors.allProcessor.firstWhere((element) => element.name == dropdownValueProcessor);
+    var procieVendor = processors.selectByName(dropdownValueProcessor);
 
     var moboVendor = allMotherboard.where((element) => element.vendor == procieVendor.vendor);
 
@@ -99,10 +99,10 @@ class _PcBuildState extends State<PcBuild> {
     List<String> uniqueListMotherboard = allMotherboardName.where((motherboard) => seenMotherboards.add(motherboard)).toList();
 
 
-    if(allMotherboard.firstWhere((element) => element.name == existPc.motherboard).vendor != allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).vendor ){
+    if(motherboards.selectByName(existPc.motherboard).vendor != processors.selectByName(dropdownValueProcessor).vendor){
       dropdownValueMotherboard = moboVendor.first.name;
-      motherboardPrice = allMotherboard.firstWhere((element) => element.name == dropdownValueMotherboard).price;
-    }else if(allMotherboard.firstWhere((element) => element.name == existPc.motherboard).vendor == allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).vendor )
+      motherboardPrice = motherboards.selectByName(dropdownValueMotherboard).price;
+    }else if(motherboards.selectByName(existPc.motherboard).vendor == processors.selectByName(dropdownValueProcessor).vendor)
       {
         dropdownValueMotherboard = existPc.motherboard;
       }
@@ -154,7 +154,7 @@ class _PcBuildState extends State<PcBuild> {
                   // This is called when the user selects an item.
                   setState(() {
                     dropdownValueProcessor = value!;
-                    processorsPrice = processors.allProcessor.firstWhere((element) => element.name == dropdownValueProcessor).price;
+                    processorsPrice = processors.selectByName(dropdownValueProcessor).price;
                     uniqueListProcessors.add(dropdownValueProcessor);
                     pcs.editPc(formData.id, dropdownValueProcessor, existPc.ram, existPc.motherboard, context).then((_) {
                       setState(() {
@@ -184,7 +184,7 @@ class _PcBuildState extends State<PcBuild> {
                   // This is called when the user selects an item.
                   setState(() {
                     dropdownValueMotherboard = value!;
-                    motherboardPrice = allMotherboard.firstWhere((element) => element.name == dropdownValueMotherboard).price;
+                    motherboardPrice = motherboards.selectByName(dropdownValueMotherboard).price;
                     uniqueListMotherboard.add(dropdownValueMotherboard);
                     pcs.editPc(formData.id, existPc.processor, existPc.ram, dropdownValueMotherboard, context).then((_) {
                       setState(() {
@@ -214,7 +214,7 @@ class _PcBuildState extends State<PcBuild> {
                   // This is called when the user selects an item.
                   setState(() {
                     dropdownValueRam = value!;
-                    ramPrice = allRam.firstWhere((element) => element.name == dropdownValueRam).price;
+                    ramPrice = rams.selectByName(dropdownValueRam).price;
                     pcs.editPc(formData.id, existPc.processor, dropdownValueRam, existPc.motherboard, context).then((_) {
                       setState(() {
                       });

@@ -16,6 +16,9 @@ class Rams with ChangeNotifier{
   Ram selectById(String id) =>
     _allRams.firstWhere((element) => element.id == id);
 
+  Ram selectByName(String name) =>
+    _allRams.firstWhere((element) => element.name == name);
+
 
   Future<void> addRam(String name, int price, BuildContext context)async {
     Uri url = Uri.parse("https://http-req-d5914-default-rtdb.firebaseio.com/rams.json");

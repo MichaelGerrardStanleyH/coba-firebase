@@ -15,6 +15,9 @@ class Motherboards with ChangeNotifier{
   Motherboard selectById(String id) =>
       _allMotherboards.firstWhere((element) => element.id == id);
 
+  Motherboard selectByName(String name) =>
+    _allMotherboards.firstWhere((element) => element.name == name);
+
 Future<void> addMotherboard(
       String name,
       String vendor,

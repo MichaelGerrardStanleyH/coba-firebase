@@ -1,29 +1,26 @@
-import 'package:coba_firebase/models/processor.dart';
+import 'package:coba_firebase/models/storage.dart';
+import 'package:coba_firebase/providers/storages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/processors.dart';
-
-class AddProcessor extends StatelessWidget{
-  static const routeName = "/add-processor";
+class AddStorage extends StatelessWidget{
+  static const routeName = "/add-storage";
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController vendorController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final processors = Provider.of<Processors>(context, listen: false);
+    final storages = Provider.of<Storages>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADd Processor"),
+        title: Text("ADd Storage"),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              processors.addProcessor(
+              storages.addStorage(
                   nameController.text,
-                  vendorController.text,
                   int.parse(priceController.text),
                   context
               );
@@ -46,12 +43,6 @@ class AddProcessor extends StatelessWidget{
               ),
               TextFormField(
                 autocorrect: false,
-                decoration: InputDecoration(labelText: "Vendor"),
-                textInputAction: TextInputAction.next,
-                controller: vendorController,
-              ),
-              TextFormField(
-                autocorrect: false,
                 decoration: InputDecoration(labelText: "Price"),
                 textInputAction: TextInputAction.next,
                 controller: priceController,
@@ -62,11 +53,10 @@ class AddProcessor extends StatelessWidget{
                 alignment: Alignment.centerRight,
                 child: OutlinedButton(
                   onPressed: () {
-                    processors.addProcessor(
-                        nameController.text,
-                        vendorController.text,
-                        int.parse(priceController.text),
-                        context
+                    storages.addStorage(
+                      nameController.text,
+                      int.parse(priceController.text),
+                      context,
                     ).then((response) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

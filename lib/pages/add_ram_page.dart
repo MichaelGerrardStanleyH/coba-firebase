@@ -13,7 +13,7 @@ class AddRam extends StatelessWidget{
     final rams = Provider.of<Rams>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADd RAMS"),
+        title: Text("ADd Rams"),
         actions: [
           IconButton(
           icon: Icon(Icons.save),

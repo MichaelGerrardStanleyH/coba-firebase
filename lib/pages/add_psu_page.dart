@@ -1,29 +1,27 @@
-import 'package:coba_firebase/models/processor.dart';
+import 'package:coba_firebase/providers/psus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/processors.dart';
+import '../providers/psus.dart';
 
-class AddProcessor extends StatelessWidget{
-  static const routeName = "/add-processor";
+class AddPsu extends StatelessWidget{
+  static const routeName = "/add-psu";
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController vendorController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final processors = Provider.of<Processors>(context, listen: false);
+    final psus = Provider.of<Psus>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADd Processor"),
+        title: Text("ADd PSU"),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              processors.addProcessor(
+              psus.addPsu(
                   nameController.text,
-                  vendorController.text,
                   int.parse(priceController.text),
                   context
               );
@@ -46,12 +44,6 @@ class AddProcessor extends StatelessWidget{
               ),
               TextFormField(
                 autocorrect: false,
-                decoration: InputDecoration(labelText: "Vendor"),
-                textInputAction: TextInputAction.next,
-                controller: vendorController,
-              ),
-              TextFormField(
-                autocorrect: false,
                 decoration: InputDecoration(labelText: "Price"),
                 textInputAction: TextInputAction.next,
                 controller: priceController,
@@ -62,11 +54,10 @@ class AddProcessor extends StatelessWidget{
                 alignment: Alignment.centerRight,
                 child: OutlinedButton(
                   onPressed: () {
-                    processors.addProcessor(
-                        nameController.text,
-                        vendorController.text,
-                        int.parse(priceController.text),
-                        context
+                    psus.addPsu(
+                      nameController.text,
+                      int.parse(priceController.text),
+                      context,
                     ).then((response) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

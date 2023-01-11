@@ -27,9 +27,10 @@ class Pcs with ChangeNotifier{
         url,
         body: json.encode({
           "name": name,
-          "processor": "null ya anjing",
-          "ram": "null ya ",
-          "motherboard": "null ini",
+          "processor": "null",
+          "ram": "null",
+          "motherboard": "null",
+          "vga": "null",
           "totalPrice": 0,
         })
     ).then((response){
@@ -39,6 +40,9 @@ class Pcs with ChangeNotifier{
             processor: "null",
             ram: "null",
             motherboard: "null",
+            vga: "null",
+            storage: "null",
+            psu: "null",
             id: json.decode(response.body)["name"].toString(),
             totalPrice: 0
         )
@@ -53,6 +57,9 @@ class Pcs with ChangeNotifier{
       String processor,
       String ram,
       String motherboard,
+      String vga,
+      String storage,
+      String psu,
       // int price,
       BuildContext context
       )async {
@@ -64,14 +71,20 @@ class Pcs with ChangeNotifier{
           "processor": processor,
           "ram": ram,
           "motherboard": motherboard,
+          "vga": vga,
+          "storage": storage,
+          "psu": psu,
           // "price": price
         })
     ).then((response){
       Pc existPc = _allPcs.firstWhere((element) => element.id == id);
-      existPc.name = "ini nama edit";
+      existPc.name = existPc.name;
       existPc.ram = ram;
       existPc.motherboard = motherboard;
       existPc.processor = processor;
+      existPc.vga = vga;
+      existPc.storage = storage;
+      existPc.psu = psu;
       existPc.totalPrice = 0;
       notifyListeners();
     });
@@ -91,6 +104,9 @@ class Pcs with ChangeNotifier{
             processor: value["processor"],
             ram: value["ram"],
             motherboard: value["motherboard"],
+            vga: value["vga"],
+            storage: value["storage"],
+            psu: value["psu"],
             totalPrice: value["totalPrice"]
         ),
       );

@@ -1,7 +1,9 @@
 import 'package:coba_firebase/pages/add_motherboard_page.dart';
 import 'package:coba_firebase/pages/add_pc_page.dart';
 import 'package:coba_firebase/pages/add_processor_page.dart';
+import 'package:coba_firebase/pages/add_psu_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
+import 'package:coba_firebase/pages/add_storage_page.dart';
 import 'package:coba_firebase/pages/pc_build_page.dart';
 import 'package:coba_firebase/providers/rams.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/pcs.dart';
 import '../models/FormData.dart';
+import 'add_vga_page.dart';
 
 
 class UserPage extends StatefulWidget{
@@ -76,6 +79,24 @@ class _UserPageState extends State<UserPage> {
             icon: Icon(Icons.baby_changing_station),
             onPressed: () {
               Navigator.pushNamed(context, AddMotherboard.routeName);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, AddVga.routeName);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.ac_unit_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, AddStorage.routeName);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.access_alarm),
+            onPressed: () {
+              Navigator.pushNamed(context, AddPsu.routeName);
             },
           ),
         ],

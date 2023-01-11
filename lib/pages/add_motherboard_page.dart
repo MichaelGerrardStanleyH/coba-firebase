@@ -16,7 +16,7 @@ class AddMotherboard extends StatelessWidget{
     final motherboards = Provider.of<Motherboards>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADd RAMS"),
+        title: Text("ADd Motherboard"),
         actions: [
           IconButton(
             icon: Icon(Icons.save),

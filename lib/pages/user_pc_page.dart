@@ -15,6 +15,7 @@ import 'add_vga_page.dart';
 
 
 class UserPage extends StatefulWidget{
+  static const routeName = "/user-page";
 
   @override
   State<UserPage> createState() => _UserPageState();

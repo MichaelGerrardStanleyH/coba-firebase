@@ -4,6 +4,7 @@ import 'package:coba_firebase/pages/add_processor_page.dart';
 import 'package:coba_firebase/pages/add_psu_page.dart';
 import 'package:coba_firebase/pages/add_ram_page.dart';
 import 'package:coba_firebase/pages/add_storage_page.dart';
+import 'package:coba_firebase/pages/add_user_page.dart';
 import 'package:coba_firebase/pages/add_vga_page.dart';
 import 'package:coba_firebase/pages/pc_build_page.dart';
 import 'package:coba_firebase/providers/motherboards.dart';
@@ -12,6 +13,7 @@ import 'package:coba_firebase/providers/processors.dart';
 import 'package:coba_firebase/providers/psus.dart';
 import 'package:coba_firebase/providers/rams.dart';
 import 'package:coba_firebase/providers/storages.dart';
+import 'package:coba_firebase/providers/users.dart';
 import 'package:coba_firebase/providers/vgas.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
             ListenableProvider(create: (context) => Vgas()),
             ListenableProvider(create: (context) => Storages()),
             ListenableProvider(create: (context) => Psus()),
+            ListenableProvider(create: (context) => Users()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -44,7 +47,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: UserPage(),
+        home: AddUser(),
         routes: {
           PcBuild.routeName: (context) => PcBuild(),
           AddRam.routeName: (context) => AddRam(),
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
           AddVga.routeName: (context) => AddVga(),
           AddStorage.routeName: (context) => AddStorage(),
           AddPsu.routeName: (context) => AddPsu(),
+          UserPage.routeName: (context) => UserPage(),
         },
       ),
     );

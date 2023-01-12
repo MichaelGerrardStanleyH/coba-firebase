@@ -144,6 +144,9 @@ class _PcBuildState extends State<PcBuild> {
     if(existPc.processor != "null" && existPc.motherboard != "null"){
       if(motherboards.selectByName(existPc.motherboard).vendor != processors.selectByName(dropdownValueProcessor).vendor){
         dropdownValueMotherboard = moboVendor.first.name;
+        setState(() {
+            pcs.editPc(formData.id, existPc.processor, existPc.ram, dropdownValueMotherboard, existPc.vga, existPc.storage, existPc.psu, context);
+          });
         motherboardPrice = motherboards.selectByName(dropdownValueMotherboard).price;
       }else if(motherboards.selectByName(existPc.motherboard).vendor == processors.selectByName(dropdownValueProcessor).vendor)
       {
